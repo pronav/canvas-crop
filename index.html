@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+	<title>Crop Demo</title>
+	<script src="crop.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<style>
+		body{
+			background: #777;
+			font-family: 'Lato', sans-serif;
+			color: #fff;
+			user-select: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+		}
+		#container{
+			width: 760px;
+			margin: 0 auto;
+			text-align: center;
+			font-size: 150%;
+		}
+		img{
+			max-width: 100%;
+			box-shadow: 0 0 8px #333;
+			border: 4px solid #fff;
+			margin-left: -4px;
+			border-radius: 4px;
+			background: #eee;
+		}
+		#image-container{
+			
+		}
+		button{
+			display: none;
+			margin: 20px 5px;
+		}
+		#info{
+			display: none;
+		}
+		#btn-crop{
+			display: inline;
+		}
+	</style>
+</head>
+<body>
+	<div id="container">
+		<h1>canvas_crop</h1>
+		<div>Lightweight plugin for client side image cropping using HTML5 canvas</div>
+		<h3>Try it</h3>
+			<div id="image-container">
+				<img id="crop-img" src="1.jpg"><br>
+				<button id="btn-crop">Crop</button>
+				<button id="btn-ok">OK</button>
+				<button id="btn-cancel">Cancel</button>
+				<div id="info">Drag rectangle to move, drag at border and edges to resize</div>
+			</div>
+		<script>
+			cropimg = document.getElementById('crop-img');
+			cropbtn = document.getElementById('btn-crop');
+			okbtn = document.getElementById('btn-ok');
+			cancelbtn = document.getElementById('btn-cancel')
+			showbuttons = function(){
+				cropbtn.style.display == 'inline';
+			}
+			cropbtn.onclick = function(){
+				window.cropInstance = canvas_crop(cropimg);
+				this.style.display = 'none';
+				okbtn.style.display = 'inline';
+				cancelbtn.style.display = 'inline';
+				document.getElementById('info').style.display = 'block';
+			}
+			cancelCrop = function(){
+				cropbtn.style.display = 'inline';
+				okbtn.style.display = 'none';
+				cancelbtn.style.display = 'none';
+				cropInstance.destroy();
+				document.getElementById('info').style.display = 'none';
+			}
+			okbtn.onclick = function(){
+				cropInstance.cropToCanvas();
+				cropimg.src = cropInstance.canvasEl.toDataURL("image/jpeg");
+				cancelCrop();
+			}
+			cancelbtn.onclick = function(){
+				cancelCrop();
+			}
+		</script>
+	</div>
+</body>
+</html>
